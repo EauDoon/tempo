@@ -6,28 +6,135 @@
 <meta name="color-scheme" content="dark">
 <title>Tempo · Source atlas</title>
 <style>
-:root{color-scheme:dark;--ink:#f1f4f0;--muted:#b2bbc0;--line:#343f47;--accent:#9cf8d2;--blue:#a4cfff;font:16px/1.5 system-ui,sans-serif;color:var(--ink);background:#0c1013}
-*{box-sizing:border-box}body{margin:0}main,header{max-width:1180px;margin:auto;padding:1rem clamp(1rem,4vw,3rem)}header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}header strong{font:bold italic 1.55rem system-ui}a{color:var(--accent);text-underline-offset:.17em;overflow-wrap:anywhere}button,select,input{background:#182026;color:var(--ink);border:1px solid #57646c;border-radius:.35rem;font:inherit;padding:.48rem .68rem;min-height:44px}button{cursor:pointer}button:hover,button[aria-pressed=true]{border-color:var(--accent);background:#203831}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,.stage:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
-h1{font-size:clamp(2.65rem,8vw,5.4rem);font-weight:650;letter-spacing:-.07em;line-height:1.05;margin:1.6rem 0 .45rem}h2{font-size:1.6rem;letter-spacing:-.035em}h3{line-height:1.15;margin:0 0 .35rem}p{max-width:70ch}.intro{font-size:1.12rem;color:var(--muted);margin:0 0 1.5rem}.console{border:1px solid var(--line);border-radius:.7rem;overflow:hidden}.bar,.camera,.fields,.steps{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}.bar,.camera,.details{padding:.8rem 1rem}.bar{border-bottom:1px solid var(--line);justify-content:space-between}.bar label,.fields label{display:grid;font-size:.8rem;gap:.2rem;color:var(--muted)}.map{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,1fr)}.stage{width:100%;height:auto;display:block;touch-action:pan-y;background:radial-gradient(ellipse at center,#1b2c31,#101719 72%);user-select:none}.camera{border-top:1px solid var(--line)}.details{border-left:1px solid var(--line);background:#101719}.details h2{margin:.4rem 0}.eyebrow,code,.stepcount{font: .82rem/1.6 ui-monospace,monospace;color:var(--accent)}.hint,.dependencies{color:var(--muted);font-size:.89rem}.hint{padding:0 1rem}.pill{font-size:.875rem;margin:.2rem .25rem .2rem 0}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:.8rem}.cards article{border-top:2px solid var(--line);padding:1rem;background:#12181b;scroll-margin-top:1rem}.cards article:target{border-color:var(--accent)}.cards p{margin:.65rem 0}.source{font-size:.9rem}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}footer{margin:1.3rem 0;color:var(--muted)}[hidden]{display:none!important}svg line,svg path{vector-effect:non-scaling-stroke}svg text{font:600 14px system-ui;paint-order:stroke;stroke:#10171a;stroke-width:4px;fill:#edf5f4;pointer-events:none}.graph-node{cursor:pointer}
-@media(max-width:720px){.map{grid-template-columns:1fr}.details{border-left:0;border-top:1px solid var(--line)}.stage{min-height:250px}header,main{padding:.85rem}.bar{align-items:end}.camera button{flex:auto}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+:root {
+  color-scheme: dark;
+  --ink: #eff5f4; --muted: #aabbb9; --line: #354442;
+  --mint: #99f7cc; --amber: #f6c986; --paper: #0c1111;
+  font: 16px/1.5 system-ui,sans-serif;
+  color: var(--ink); background: var(--paper);
+}
+* { box-sizing: border-box }
+body { margin: 0 }
+header, main { max-width: 1320px; margin: auto; padding-inline: clamp(1rem,4vw,3.5rem) }
+header { min-height: 66px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line) }
+header svg { width: 96px; height: auto; display: block }
+header nav { display: flex; align-items: center; gap: clamp(.8rem,2vw,2rem); font-size: .86rem }
+header nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink) }
+a { color: var(--mint); text-underline-offset: .22em; overflow-wrap: anywhere }
+a:hover { color: #fff }
+.hero { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 2rem; padding: clamp(1.4rem,4.5vw,3.4rem) 0 1.6rem }
+h1, h2, h3, p { margin: 0 }
+h1, h2 { letter-spacing: -.055em; line-height: 1.05 }
+h1 { font-size: clamp(2.85rem,6vw,5.25rem); font-weight: 580 }
+h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 590 }
+h3 { line-height: 1.25 }
+.intro { max-width: 48ch; color: var(--muted); font-size: clamp(1rem,1.6vw,1.1rem); text-wrap: pretty }
+button, select, input {
+  min-height: 44px; min-width: 0; border: 1px solid #54645e; border-radius: 5px; background: #19231f;
+  color: var(--ink); font: inherit; padding: .5rem .7rem;
+}
+button { cursor: pointer }
+button:hover,select:hover { background: #26352e; border-color: var(--mint) }
+button:disabled { cursor: default; color: #9baba5; border-style: dashed; background: #171e1c }
+:where(button,a,select,input,.stage):focus-visible { outline: 3px solid var(--amber); outline-offset: 3px }
+.console { border: 1px solid var(--line); border-top: 2px solid var(--mint); border-radius: 6px; overflow: hidden; background: #101817 }
+.bar { display: flex; align-items: center; gap: 1.4rem; padding: .7rem 1rem; border-bottom: 1px solid var(--line) }
+.bar label, .fields label { display: grid; gap: .22rem; min-width: 0; font-size: .8rem; color: var(--muted) }
+.bar select { width: 100%; font-size: .92rem }
+.scope, .stepcount, code, .details-label, #matches { font: .78rem/1.6 ui-monospace, monospace }
+.scope { margin-left: auto; color: var(--muted) }
+.map { display: grid; grid-template-columns: minmax(0,1.8fr) minmax(300px,1fr) }
+.plot { min-width: 0; display: flex; flex-direction: column; background: #101917 }
+.stage {
+  width: 100%; height: auto; aspect-ratio: 1.60; display: block; touch-action: pan-y; user-select: none;
+  background-color: #111c1a;
+  background-image: radial-gradient(ellipse at 46% 50%,#213e344d,transparent 66%),
+    linear-gradient(90deg,#94c5aa0e 1px,transparent 1px), linear-gradient(#94c5aa0e 1px,transparent 1px);
+  background-size: auto,26px 26px,26px 26px;
+}
+.stage:focus-visible { outline-offset: -4px }
+.stage path, .stage line { vector-effect: non-scaling-stroke }
+.stage text { font: 580 var(--node-label-size,13px) system-ui,sans-serif; paint-order: stroke; stroke: #10201b; stroke-width: 4px; stroke-linejoin: round; fill: #edf7f3 }
+.stage .selected text { fill: var(--mint); font-weight: 750 }
+.graph-node { cursor: pointer }
+.edge { fill: none; stroke: #556a62; stroke-width: 1 }
+.edge.out { stroke: var(--mint); stroke-width: 2.6 }
+.edge.in { stroke: var(--amber); stroke-width: 1.7; stroke-dasharray: 5 4 }
+.stage.guided .edge:not(.on-route) { opacity: .32 }
+.stage.guided .edge.on-route:not(.out):not(.in) { stroke: #c7d6d0; stroke-width: 1.8 }
+.plot-footer { margin-top: auto; border-top: 1px solid var(--line); padding: .65rem 1rem }
+.legend, .camera, .steps, .fields, .actions { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap }
+.legend { gap: 1.2rem; color: var(--muted); font-size: .8rem; margin-bottom: .55rem }
+.key { display: inline-flex; align-items: center; gap: .4rem }
+.key::before { content: ''; width: 1.5rem; border-top: 2px solid var(--mint) }
+.key.in::before { border-top: 2px dashed var(--amber) }
+.camera button { padding: .35rem .75rem; font-size: .86rem }
+.hint { color: var(--muted); font-size: .82rem; margin: .4rem 0 0 }
+.details { min-width: 0; border-left: 1px solid var(--line); padding: clamp(1rem,2.3vw,1.8rem); background: #151e1a }
+.details-label { display: flex; align-items: center; gap: .5rem; color: var(--mint) }
+.details-label::before { content: ''; height: 8px; width: 8px; border: 2px solid var(--mint); border-radius: 50% }
+.details h2 { margin: .35rem 0 .2rem }
+code { color: var(--mint); overflow-wrap: anywhere }
+.details p { color: #d1dcd7; margin: .75rem 0; max-width: 48ch }
+.details h3 { font-size: .85rem; color: var(--muted); font-weight: 600; margin: .8rem 0 .25rem }
+.relation { border-top: 1px solid var(--line); margin-top: .85rem }
+.pill { font-size: .86rem; padding: .35rem .65rem; margin: .15rem .3rem .15rem 0; background: #1b2822 }
+.steps { margin-top: 1rem }
+.actions { margin-top: 1rem; gap: .8rem; font-size: .85rem }
+.actions a { display: inline-flex; align-items: center; min-height: 44px }
+.source-index { margin-top: clamp(2.3rem,5vw,4rem); border-top: 1px solid var(--line); padding-top: 1.5rem }
+.source-index > p { color: var(--muted); margin: .7rem 0 1rem; max-width: 76ch }
+.fields { align-items: end; gap: 1rem; padding-bottom: 1rem }
+.fields input { font-size: 1rem }
+#matches { color: var(--muted); padding-bottom: .6rem }
+.cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,320px),1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line) }
+.cards article { padding: 1.1rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #121917; scroll-margin-top: 1rem }
+.cards article:target { box-shadow: inset 3px 0 var(--mint) }
+.cards h3 { font-size: 1.12rem }
+.cards p { margin: .7rem 0 }
+.dependencies, .source { font-size: .88rem }
+.dependencies, footer { color: var(--muted) }
+footer { margin: 1.6rem 0; font-size: .85rem }
+[hidden] { display: none !important }
+@media (max-width: 760px) {
+  header { min-height: 52px }
+  header svg { width: 82px }
+  .hero { grid-template-columns: 1fr; gap: .5rem; padding: 1.4rem 0 1rem }
+  .intro { max-width: 47ch }
+  .bar { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); gap: .65rem; padding: .55rem .65rem }
+  .bar select { font-size: .84rem; padding: .35rem .25rem }
+  .scope { display: none }
+  .map { grid-template-columns: minmax(0,1fr) }
+  .stage { aspect-ratio: 1.28 }
+  .details { border-left: 0; border-top: 1px solid var(--line) }
+  .plot-footer { padding: .55rem .65rem }
+  .camera { gap: .35rem }
+  .camera button { padding: .35rem .55rem }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
 </style>
 </head>
-<body><header><strong>Tempo</strong><a href="https://github.com/EauDoon/tempo">EauDoon / tempo</a></header>
-<main><h1>Source atlas</h1>
-<p class="intro">Trace a payment from its Rust types to the components that build and execute a block. Each connection marks a direct Cargo dependency between the nine selected crates.</p>
+<body><header><svg role="img" aria-label="Tempo" width="208" height="46" viewBox="0 0 208 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.4218 45.2859H3.16805L14.5252 10.771H0L3.16805 0.654591H43.6354L40.4674 10.771H26.7192L15.4218 45.2859Z" fill="white"/>
+<path d="M61.0219 45.2859H31.9715L46.5565 0.654591H75.4874L72.7377 9.16429H55.9411L52.8926 18.7451H69.1513L66.4016 27.1358H50.0832L47.0347 36.7762H63.7118L61.0219 45.2859Z" fill="white"/>
+<path d="M74.1704 45.2859H64.4272L79.072 0.654591H95.3307L94.7927 24.7555L110.633 0.654591H128.446L113.861 45.2859H101.667L111.35 15.2937H111.171L91.266 45.2859H84.0333L84.3321 14.9366H84.2126L74.1704 45.2859Z" fill="white"/>
+<path d="M142.162 8.92626L137.44 23.3273H138.755C141.743 23.3273 144.234 22.633 146.226 21.2445C148.219 19.8163 149.514 17.793 150.112 15.1746C150.63 12.9133 150.351 11.3066 149.275 10.3545C148.199 9.40233 146.406 8.92626 143.895 8.92626H142.162ZM130.326 45.2859H118.073L132.658 0.654591H147.541C150.969 0.654591 153.917 1.21 156.388 2.32083C158.899 3.39198 160.732 4.9392 161.887 6.96248C163.083 8.9461 163.481 11.2669 163.083 13.925C162.565 17.4161 161.21 20.4907 159.018 23.1488C156.826 25.8068 153.977 27.8698 150.47 29.3376C147.003 30.7658 143.118 31.4799 138.814 31.4799H134.809L130.326 45.2859Z" fill="white"/>
+<path d="M192.29 42.4295C188.225 44.8098 183.902 46 179.319 46H179.2C175.135 46 171.708 45.1074 168.918 43.3221C166.169 41.4972 164.196 39.0375 163.001 35.9431C161.845 32.8486 161.566 29.4567 162.164 25.7671C162.921 21.1255 164.654 16.8409 167.364 12.9133C170.074 8.98577 173.461 5.85166 177.526 3.511C181.591 1.17033 185.934 0 190.557 0H190.676C194.9 0 198.387 0.892626 201.137 2.67788C203.926 4.46313 205.859 6.90298 206.935 9.99741C208.051 13.0522 208.29 16.4838 207.652 20.2924C206.895 24.7753 205.162 29.0004 202.452 32.9677C199.742 36.8952 196.355 40.0492 192.29 42.4295ZM175.374 34.7529C176.45 36.7762 178.323 37.7878 180.993 37.7878H181.112C183.304 37.7878 185.336 36.9746 187.209 35.348C189.122 33.6818 190.736 31.4601 192.051 28.6831C193.406 25.906 194.402 22.8116 195.04 19.3997C195.638 16.0673 195.398 13.3894 194.322 11.3661C193.247 9.30315 191.394 8.27167 188.763 8.27167H188.644C186.612 8.27167 184.639 9.10479 182.726 10.771C180.853 12.4373 179.219 14.6787 177.825 17.4955C176.43 20.3122 175.414 23.367 174.776 26.6598C174.139 29.9922 174.338 32.69 175.374 34.7529Z" fill="white"/>
+</svg><nav aria-label="Atlas navigation"><a href="#index-title">Source index</a><a href="https://github.com/EauDoon/tempo">EauDoon / tempo</a></nav></header>
+<main><div class="hero"><h1>Source atlas</h1>
+<p class="intro">Follow the Rust crates that assemble blocks and execute payments. Select a crate to trace its direct dependencies.</p></div>
 <section id="explorer" class="console" hidden aria-label="Interactive dependency map">
 <div class="bar"><label>Reading path<select id="route"><option value="all">All crates</option><option value="payment">Payment execution</option><option value="block">Block assembly</option><option value="startup">Node composition</option></select></label>
-<label>Inspect crate<select id="picker"></select></label></div>
-<div class="map"><div>
-<svg id="stage" class="stage" viewBox="-250 -200 500 400" role="group" tabindex="0" aria-label="Three-dimensional dependency map. Use arrow keys to rotate, Home to reset. Select crates with the Inspect crate control." aria-describedby="orbit-hint"></svg>
+<label>Inspect crate<select id="picker"></select></label><output class="scope" id="scope"></output></div>
+<div class="map"><div class="plot">
+<svg id="stage" class="stage" viewBox="-235 -175 470 350" role="group" tabindex="0" aria-label="Three-dimensional dependency map. Use arrow keys to rotate, Home to reset. Select crates with the Inspect crate control." aria-describedby="orbit-hint"></svg>
+<div class="plot-footer"><div class="legend"><span class="key">Depends on</span><span class="key in">Used by</span></div>
 <div class="camera"><button id="left">Rotate left</button><button id="right">Rotate right</button><button id="reset">Reset view</button></div>
-<p class="hint" id="orbit-hint">Drag sideways or use arrow keys to orbit. Bright lines connect the selected crate to its direct dependencies. The source index lists each connection in text.</p>
-</div><div class="details"><span class="eyebrow">CARGO WORKSPACE</span>
+<p class="hint" id="orbit-hint">Drag or use arrow keys to orbit. Home resets the view.</p></div>
+</div><div class="details"><span class="details-label">Selected crate</span>
 <div id="inspection" aria-live="polite"></div><div class="steps" id="steps" hidden><button id="prev">Previous</button><span class="stepcount" id="position"></span><button id="next">Next</button></div>
-<p><a id="permalink" href="#cli">Link to this crate</a></p>
-<button id="save">Download crate JSON</button></div></div></section>
-<section aria-labelledby="index-title"><h2 id="index-title">Source index</h2>
+<div class="actions"><button id="save">Download crate JSON</button><a id="permalink" href="#cli">Link to this crate</a></div></div></div></section>
+<section class="source-index" aria-labelledby="index-title"><h2 id="index-title">Source index</h2>
 <p>Manifest snapshot <a href="https://github.com/EauDoon/tempo/tree/731535b9808eda12e81ab6459703602554eaee5a"><code>731535b</code></a>. Edges cover normal dependencies among the listed crates. Development, build, and external dependencies are outside this view.</p>
 <div id="searchbox" class="fields" hidden><label>Search the index<input id="search" type="search" placeholder="Crate, role, or protocol"></label><span id="matches" role="status"></span></div>
 <div id="cards" class="cards">
@@ -123,9 +230,60 @@ function svg(name, attributes) {
   for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
   return element;
 }
+// Position labels in viewBox units. Dot positions retain their projected 3D coordinates.
+function placeLabels(projected) {
+  const occupied = [...projected.values()].map(([x,y]) => [x-7,y-7,x+7,y+7]);
+  const groups = [...stage.querySelectorAll('.graph-node')];
+  groups.sort((a,b) => Number(b.dataset.id === active) - Number(a.dataset.id === active));
+  for (const group of groups) {
+    const [x,y] = projected.get(group.dataset.id);
+    const label = group.querySelector('text');
+    const bounds = label.getBBox(), half = bounds.width / 2;
+    // The SVG baseline sits above the bottom of its text box.
+    const ascent = -17 - bounds.y, descent = bounds.height - ascent;
+    const candidates = [[0,-17], [0,22], [half+12,5], [-half-12,5]];
+    for (const dy of [-36,40,-58,62,-80,84]) {
+      for (const dx of [0,half,-half,half+22,-half-22]) candidates.push([dx,dy]);
+    }
+    let best, minimum = Infinity;
+    for (const [dx,dy] of candidates) {
+      const cx = Math.max(-229+half, Math.min(229-half, x+dx));
+      const baseline = Math.max(-171+ascent, Math.min(171-descent, y+dy));
+      const box = [cx-half-2, baseline-ascent-2, cx+half+2, baseline+descent+2];
+      const overlap = occupied.reduce((sum,[l,t,r,b]) =>
+        sum + Math.max(0,Math.min(r,box[2])-Math.max(l,box[0])) *
+              Math.max(0,Math.min(b,box[3])-Math.max(t,box[1])), 0);
+      if (overlap < minimum) { minimum = overlap; best = {cx,baseline,box}; }
+      if (overlap === 0) break;
+    }
+    label.setAttribute('x', best.cx-x);
+    label.setAttribute('y', best.baseline-y);
+    occupied.push(best.box);
+    if (Math.abs(best.cx-x) > half+5 || Math.abs(best.baseline-y) > 28) {
+      const endX = Math.max(best.cx-half, Math.min(best.cx+half, x)) - x;
+      const endY = Math.max(best.box[1]+2, Math.min(best.box[3]-2, y)) - y;
+      group.insertBefore(svg('path', {
+        d:'M 0 0 L '+endX+' '+endY, stroke:'#9aaca5', fill:'none'
+      }), group.firstChild);
+    }
+  }
+}
 function draw() {
   stage.replaceChildren();
-  const projected = new Map(routes[route].map(id => [id, project(nodes.get(id).point)]));
+  const scale = stage.getScreenCTM()?.a || 1;
+  stage.style.setProperty('--node-label-size', Math.max(13,13/scale) + 'px');
+  const order = routes[route];
+  // Center a reading path around its own crates; keep that center fixed while orbiting.
+  const center = [0, 0, 0];
+  if (route !== 'all') {
+    for (const id of order) {
+      nodes.get(id).point.forEach((value, axis) => { center[axis] += value / order.length; });
+    }
+  }
+  const projected = new Map(order.map(id => {
+    const point = nodes.get(id).point.map((value, axis) => value - center[axis]);
+    return [id, project(point)];
+  }));
   for (const axis of [0, 1, 2]) {
     const points = Array.from({length: 85}, (_, index) => {
       const angle = index * Math.PI / 42;
@@ -135,23 +293,44 @@ function draw() {
     });
     stage.append(svg('path', {d:points.join(' '),stroke:'#34464c', fill:'none','stroke-dasharray':'3 5'}));
   }
-  for (const [id,[x,y]] of projected) {
-    for (const dep of nodes.get(id).dependsOn.filter(dep => projected.has(dep))) {
-      const [dx,dy] = projected.get(dep);
-      stage.append(svg('line',{x1:x,y1:y,x2:dx,y2:dy,stroke:id===active ? '#9cf8d2' : '#47616b','stroke-width':id===active ? 2.4 : 1}));
+  stage.classList.toggle('guided', route !== 'all');
+  const edges = [];
+  for (const [id, origin] of projected) {
+    for (const dependency of nodes.get(id).dependsOn) {
+      if (!projected.has(dependency)) continue;
+      const direction = id === active ? 'out' : dependency === active ? 'in' : '';
+      const onRoute = route !== 'all' && order[order.indexOf(id) + 1] === dependency;
+      edges.push({origin, target: projected.get(dependency), direction, onRoute});
     }
   }
+  // Draw the selected relationships last so context edges cannot obscure them.
+  edges.sort((a, b) => Number(!!a.direction) - Number(!!b.direction));
+  for (const {origin: [x1, y1], target: [x2, y2], direction, onRoute} of edges) {
+    const style = 'edge ' + direction + (onRoute ? ' on-route' : '');
+    stage.append(svg('line', {x1, y1, x2, y2, class: style}));
+    if (route === 'all' ? !direction : !onRoute) continue;
+    // Place each arrow partway along the edge so it stays clear of endpoint circles.
+    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    const x = x1 + (x2 - x1) * .66, y = y1 + (y2 - y1) * .66;
+    stage.append(svg('path', {
+      d: 'M -5 -4 L 1 0 L -5 4', class: style,
+      transform: 'translate(' + x + ' ' + y + ') rotate(' + angle + ')',
+      style: 'stroke-dasharray:none;stroke-linecap:round;stroke-linejoin:round'
+    }));
+  }
+  byId('scope').value = projected.size + ' crates / ' + edges.length + ' dependencies';
   for (const [id,[x,y,z]] of [...projected].sort((a,b) => a[1][2]-b[1][2])) {
-    const group = svg('g', {class:'graph-node','data-id':id,transform:'translate('+x+' '+y+')','aria-hidden':'true'});
+    const group = svg('g', {class:id === active ? 'graph-node selected' : 'graph-node','data-id':id,transform:'translate('+x+' '+y+')','aria-hidden':'true'});
     group.append(svg('circle',{r:18,fill:'transparent'}));
     const selected = id === active;
     if (selected) group.append(svg('circle',{r:13,fill:'#17342e',stroke:'#9cf8d2'}));
     group.append(svg('circle',{r:selected ? 6 : 4+(z+160)/160,fill:selected ? '#9cf8d2' : '#c8e0e9'}));
     const text = svg('text', {x:0,y:-17,'text-anchor':'middle'});
-    text.textContent = nodes.get(id).label;
+    text.textContent = (route === 'all' ? '' : (order.indexOf(id) + 1) + ' · ') + nodes.get(id).label;
     group.append(text);
     stage.append(group);
   }
+  placeLabels(projected);
 }
 function element(tag, text) {
   const node = document.createElement(tag);
@@ -163,6 +342,7 @@ function dependents(id) {
 }
 function relation(title, ids) {
   const wrap = element('div','');
+  wrap.className = 'relation';
   wrap.append(element('h3',title));
   if (!ids.length) wrap.append(element('p','None in this selection.'));
   for (const id of ids) {
@@ -175,7 +355,7 @@ function relation(title, ids) {
 }
 function fillPicker() {
   byId('route').value = route;
-  byId('picker').replaceChildren(...routes[route].map(id => new Option(nodes.get(id).name,id)));
+  byId('picker').replaceChildren(...routes[route].map(id => new Option(nodes.get(id).label,id)));
 }
 function select(id, focusPicker=false) {
   if (!nodes.has(id)) return;
@@ -186,6 +366,9 @@ function select(id, focusPicker=false) {
   active = id;
   const node = nodes.get(id);
   byId('picker').value = id;
+  byId('orbit-hint').textContent = route === 'all'
+    ? 'Drag or use arrow keys to orbit. Home resets the view.'
+    : 'Follow the numbered crates in reading order. Drag or use arrow keys to orbit.';
   const source = element('a','Open Cargo manifest');
   source.href = node.manifest;
   const link = element('p','');
@@ -275,5 +458,6 @@ byId('searchbox').hidden = false;
 fillPicker();
 select(active);
 search();
+new ResizeObserver(draw).observe(stage);
 </script>
 </body></html>
