@@ -109,46 +109,32 @@ For local development and CI, run the [bootstrapped localnet container](./docs/l
 docker run --rm -p 127.0.0.1:8545:8545 ghcr.io/tempoxyz/tempo-localnet:latest
 ```
 
-Want to contribute?
+#### Explore the fork
 
-First, clone the repository:
+The [Tempo source atlas](docs/source-atlas.html) maps selected Rust dependencies in this fork. Download the HTML file using GitHub’s **Download raw file** button and open it in a browser, or open `docs/source-atlas.html` from a checkout. Follow a reading path, inspect a crate’s direct dependencies and dependents, or export the selection as JSON. The atlas runs offline. Its source links open the exact revision on GitHub.
 
-```
-git clone https://github.com/tempoxyz/tempo
+To work on this fork:
+
+```sh
+git clone https://github.com/EauDoon/tempo.git
 cd tempo
 ```
 
-Next, install [`just`](https://github.com/casey/just?tab=readme-ov-file#packages).
+For upstream contributions, use the [Tempo repository](https://github.com/tempoxyz/tempo). Check the [workspace manifest](./Cargo.toml) for the required Rust version and the [node installation guide](https://docs.tempo.xyz/guide/node/installation#build-from-source) for build prerequisites.
 
-Install the dependencies:
+Build the node binary:
 
-```bash
-just
+```sh
+cargo build --locked --bin tempo
 ```
 
-Configure Git to run the repository hooks:
+Run the tests with [cargo-nextest](https://nexte.st/):
 
-```bash
-./scripts/setup-hooks.sh
-```
-
-Build Tempo:
-
-```bash
-just build-all
-```
-
-Run the tests:
-
-```bash
+```sh
 cargo nextest run
 ```
 
-Start a `localnet`:
-
-```bash
-just localnet
-```
+For a local development network, use the [loopback-bound localnet container](./docs/localnet.md). To contribute a TIP, first [configure the repository hooks](./scripts/setup-hooks.sh).
 
 ## Contributing
 

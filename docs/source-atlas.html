@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Tempo · Source atlas</title>
+<style>
+:root{color-scheme:dark;--ink:#f1f4f0;--muted:#b2bbc0;--line:#343f47;--accent:#9cf8d2;--blue:#a4cfff;font:16px/1.5 system-ui,sans-serif;color:var(--ink);background:#0c1013}
+*{box-sizing:border-box}body{margin:0}main,header{max-width:1180px;margin:auto;padding:1rem clamp(1rem,4vw,3rem)}header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}header strong{font:bold italic 1.55rem system-ui}a{color:var(--accent);text-underline-offset:.17em;overflow-wrap:anywhere}button,select,input{background:#182026;color:var(--ink);border:1px solid #57646c;border-radius:.35rem;font:inherit;padding:.48rem .68rem;min-height:44px}button{cursor:pointer}button:hover,button[aria-pressed=true]{border-color:var(--accent);background:#203831}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,.stage:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+h1{font-size:clamp(2.65rem,8vw,5.4rem);font-weight:650;letter-spacing:-.07em;line-height:1.05;margin:1.6rem 0 .45rem}h2{font-size:1.6rem;letter-spacing:-.035em}h3{line-height:1.15;margin:0 0 .35rem}p{max-width:70ch}.intro{font-size:1.12rem;color:var(--muted);margin:0 0 1.5rem}.console{border:1px solid var(--line);border-radius:.7rem;overflow:hidden}.bar,.camera,.fields,.steps{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}.bar,.camera,.details{padding:.8rem 1rem}.bar{border-bottom:1px solid var(--line);justify-content:space-between}.bar label,.fields label{display:grid;font-size:.8rem;gap:.2rem;color:var(--muted)}.map{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,1fr)}.stage{width:100%;height:auto;display:block;touch-action:pan-y;background:radial-gradient(ellipse at center,#1b2c31,#101719 72%);user-select:none}.camera{border-top:1px solid var(--line)}.details{border-left:1px solid var(--line);background:#101719}.details h2{margin:.4rem 0}.eyebrow,code,.stepcount{font: .82rem/1.6 ui-monospace,monospace;color:var(--accent)}.hint,.dependencies{color:var(--muted);font-size:.89rem}.hint{padding:0 1rem}.pill{font-size:.875rem;margin:.2rem .25rem .2rem 0}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:.8rem}.cards article{border-top:2px solid var(--line);padding:1rem;background:#12181b;scroll-margin-top:1rem}.cards article:target{border-color:var(--accent)}.cards p{margin:.65rem 0}.source{font-size:.9rem}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}footer{margin:1.3rem 0;color:var(--muted)}[hidden]{display:none!important}svg line,svg path{vector-effect:non-scaling-stroke}svg text{font:600 14px system-ui;paint-order:stroke;stroke:#10171a;stroke-width:4px;fill:#edf5f4;pointer-events:none}.graph-node{cursor:pointer}
+@media(max-width:720px){.map{grid-template-columns:1fr}.details{border-left:0;border-top:1px solid var(--line)}.stage{min-height:250px}header,main{padding:.85rem}.bar{align-items:end}.camera button{flex:auto}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body><header><strong>Tempo</strong><a href="https://github.com/EauDoon/tempo">EauDoon / tempo</a></header>
+<main><h1>Source atlas</h1>
+<p class="intro">Trace a payment from its Rust types to the components that build and execute a block. Each connection marks a direct Cargo dependency between the nine selected crates.</p>
+<section id="explorer" class="console" hidden aria-label="Interactive dependency map">
+<div class="bar"><label>Reading path<select id="route"><option value="all">All crates</option><option value="payment">Payment execution</option><option value="block">Block assembly</option><option value="startup">Node composition</option></select></label>
+<label>Inspect crate<select id="picker"></select></label></div>
+<div class="map"><div>
+<svg id="stage" class="stage" viewBox="-250 -200 500 400" role="group" tabindex="0" aria-label="Three-dimensional dependency map. Use arrow keys to rotate, Home to reset. Select crates with the Inspect crate control." aria-describedby="orbit-hint"></svg>
+<div class="camera"><button id="left">Rotate left</button><button id="right">Rotate right</button><button id="reset">Reset view</button></div>
+<p class="hint" id="orbit-hint">Drag sideways or use arrow keys to orbit. Bright lines connect the selected crate to its direct dependencies. The source index lists each connection in text.</p>
+</div><div class="details"><span class="eyebrow">CARGO WORKSPACE</span>
+<div id="inspection" aria-live="polite"></div><div class="steps" id="steps" hidden><button id="prev">Previous</button><span class="stepcount" id="position"></span><button id="next">Next</button></div>
+<p><a id="permalink" href="#cli">Link to this crate</a></p>
+<button id="save">Download crate JSON</button></div></div></section>
+<section aria-labelledby="index-title"><h2 id="index-title">Source index</h2>
+<p>Manifest snapshot <a href="https://github.com/EauDoon/tempo/tree/731535b9808eda12e81ab6459703602554eaee5a"><code>731535b</code></a>. Edges cover normal dependencies among the listed crates. Development, build, and external dependencies are outside this view.</p>
+<div id="searchbox" class="fields" hidden><label>Search the index<input id="search" type="search" placeholder="Crate, role, or protocol"></label><span id="matches" role="status"></span></div>
+<div id="cards" class="cards">
+<article id="cli" data-point="-112,-83,58" data-deps="node consensus precompiles evm contracts primitives">
+  <h3>CLI</h3><code>tempo</code>
+  <p>Launch the node and connect its execution and consensus components.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#node">Node</a>, <a href="#consensus">Consensus</a>, <a href="#precompiles">Precompiles</a>, <a href="#evm">EVM</a>, <a href="#contracts">Contract ABI</a>, <a href="#primitives">Primitives</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/bin/tempo/Cargo.toml">Read bin/tempo/Cargo.toml</a>
+</article>
+<article id="consensus" data-point="88,-125,-28" data-deps="evm node primitives precompiles">
+  <h3>Consensus</h3><code>tempo-consensus</code>
+  <p>Follow the consensus engine, its configuration, and its connection to an execution node.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#evm">EVM</a>, <a href="#node">Node</a>, <a href="#primitives">Primitives</a>, <a href="#precompiles">Precompiles</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/consensus/Cargo.toml">Read crates/consensus/Cargo.toml</a>
+</article>
+<article id="node" data-point="-138,-13,-65" data-deps="evm pool builder precompiles primitives">
+  <h3>Node</h3><code>tempo-node</code>
+  <p>Trace how Reth node builders attach the pool, payload builder, and RPC components.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#evm">EVM</a>, <a href="#pool">Tx pool</a>, <a href="#builder">Block builder</a>, <a href="#precompiles">Precompiles</a>, <a href="#primitives">Primitives</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/node/Cargo.toml">Read crates/node/Cargo.toml</a>
+</article>
+<article id="builder" data-point="115,-28,85" data-deps="evm precompiles primitives pool">
+  <h3>Block builder</h3><code>tempo-payload-builder</code>
+  <p>Inspect how a block payload is assembled from candidate transactions.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#evm">EVM</a>, <a href="#precompiles">Precompiles</a>, <a href="#primitives">Primitives</a>, <a href="#pool">Tx pool</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/payload/builder/Cargo.toml">Read crates/payload/builder/Cargo.toml</a>
+</article>
+<article id="pool" data-point="-155,68,55" data-deps="contracts evm primitives precompiles">
+  <h3>Tx pool</h3><code>tempo-transaction-pool</code>
+  <p>Inspect admission, ordering, and maintenance for Tempo transactions and two-dimensional nonces.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#contracts">Contract ABI</a>, <a href="#evm">EVM</a>, <a href="#primitives">Primitives</a>, <a href="#precompiles">Precompiles</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/transaction-pool/Cargo.toml">Read crates/transaction-pool/Cargo.toml</a>
+</article>
+<article id="evm" data-point="2,2,0" data-deps="contracts precompiles primitives">
+  <h3>EVM</h3><code>tempo-evm</code>
+  <p>Follow block execution and assembly in the Tempo EVM implementation.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#contracts">Contract ABI</a>, <a href="#precompiles">Precompiles</a>, <a href="#primitives">Primitives</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/evm/Cargo.toml">Read crates/evm/Cargo.toml</a>
+</article>
+<article id="precompiles" data-point="112,65,-62" data-deps="contracts primitives">
+  <h3>Precompiles</h3><code>tempo-precompiles</code>
+  <p>Locate native payment implementations, including TIP-20, the fee manager, and the policy registry.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#contracts">Contract ABI</a>, <a href="#primitives">Primitives</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/precompiles/Cargo.toml">Read crates/precompiles/Cargo.toml</a>
+</article>
+<article id="primitives" data-point="-50,139,-25" data-deps="contracts">
+  <h3>Primitives</h3><code>tempo-primitives</code>
+  <p>Read the shared block, header, and transaction representations used by execution components.</p>
+  <p class="dependencies"><strong>Depends on</strong> <a href="#contracts">Contract ABI</a></p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/primitives/Cargo.toml">Read crates/primitives/Cargo.toml</a>
+</article>
+<article id="contracts" data-point="105,142,52" data-deps="">
+  <h3>Contract ABI</h3><code>tempo-contracts</code>
+  <p>Find the ABI definitions and generated Rust bindings for Tempo system contracts.</p>
+  <p class="dependencies"><strong>Depends on</strong> None in this selection</p>
+  <a class="source" href="https://github.com/EauDoon/tempo/blob/731535b9808eda12e81ab6459703602554eaee5a/crates/contracts/Cargo.toml">Read crates/contracts/Cargo.toml</a>
+</article>
+</div></section><footer>Source links open pinned manifests in Daniel Oon’s fork.</footer></main>
+<script>
+'use strict';
+const byId = id => document.getElementById(id);
+const articles = [...document.querySelectorAll('#cards article')];
+const nodes = new Map(articles.map(article => [article.id, {
+  id: article.id,
+  label: article.querySelector('h3').textContent,
+  name: article.querySelector('code').textContent,
+  description: article.querySelector('p').textContent,
+  manifest: article.querySelector('.source').href,
+  point: article.dataset.point.split(',').map(Number),
+  dependsOn: article.dataset.deps.split(' ').filter(Boolean),
+}]));
+const routes = {
+  all: [...nodes.keys()],
+  payment: ['pool', 'evm', 'precompiles', 'contracts'],
+  block: ['node', 'builder', 'pool', 'primitives'],
+  startup: ['cli', 'consensus', 'node', 'evm'],
+};
+const stage = byId('stage');
+let active = nodes.has(location.hash.slice(1)) ? location.hash.slice(1) : 'node';
+let route = 'all';
+let yaw = -0.12;
+let pitch = 0.11;
+
+function project([x, y, z]) {
+  const xx = x * Math.cos(yaw) + z * Math.sin(yaw);
+  const zz = z * Math.cos(yaw) - x * Math.sin(yaw);
+  const depth = y * Math.sin(pitch) + zz * Math.cos(pitch);
+  const scale = 670 / (670 - depth);
+  return [xx * scale, (y * Math.cos(pitch) - zz * Math.sin(pitch)) * scale, depth];
+}
+function svg(name, attributes) {
+  const element = document.createElementNS('http://www.w3.org/2000/svg', name);
+  for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
+  return element;
+}
+function draw() {
+  stage.replaceChildren();
+  const projected = new Map(routes[route].map(id => [id, project(nodes.get(id).point)]));
+  for (const axis of [0, 1, 2]) {
+    const points = Array.from({length: 85}, (_, index) => {
+      const angle = index * Math.PI / 42;
+      const point = [145 * Math.cos(angle), 145 * Math.sin(angle), 0];
+      const [x,y] = project([...point.slice(axis), ...point.slice(0, axis)]);
+      return (index ? 'L' : 'M') + x + ',' + y;
+    });
+    stage.append(svg('path', {d:points.join(' '),stroke:'#34464c', fill:'none','stroke-dasharray':'3 5'}));
+  }
+  for (const [id,[x,y]] of projected) {
+    for (const dep of nodes.get(id).dependsOn.filter(dep => projected.has(dep))) {
+      const [dx,dy] = projected.get(dep);
+      stage.append(svg('line',{x1:x,y1:y,x2:dx,y2:dy,stroke:id===active ? '#9cf8d2' : '#47616b','stroke-width':id===active ? 2.4 : 1}));
+    }
+  }
+  for (const [id,[x,y,z]] of [...projected].sort((a,b) => a[1][2]-b[1][2])) {
+    const group = svg('g', {class:'graph-node','data-id':id,transform:'translate('+x+' '+y+')','aria-hidden':'true'});
+    group.append(svg('circle',{r:18,fill:'transparent'}));
+    const selected = id === active;
+    if (selected) group.append(svg('circle',{r:13,fill:'#17342e',stroke:'#9cf8d2'}));
+    group.append(svg('circle',{r:selected ? 6 : 4+(z+160)/160,fill:selected ? '#9cf8d2' : '#c8e0e9'}));
+    const text = svg('text', {x:0,y:-17,'text-anchor':'middle'});
+    text.textContent = nodes.get(id).label;
+    group.append(text);
+    stage.append(group);
+  }
+}
+function element(tag, text) {
+  const node = document.createElement(tag);
+  node.textContent = text;
+  return node;
+}
+function dependents(id) {
+  return [...nodes.values()].filter(node => node.dependsOn.includes(id)).map(node => node.id);
+}
+function relation(title, ids) {
+  const wrap = element('div','');
+  wrap.append(element('h3',title));
+  if (!ids.length) wrap.append(element('p','None in this selection.'));
+  for (const id of ids) {
+    const button = element('button',nodes.get(id).label);
+    button.className = 'pill';
+    button.onclick = () => select(id, true);
+    wrap.append(button);
+  }
+  return wrap;
+}
+function fillPicker() {
+  byId('route').value = route;
+  byId('picker').replaceChildren(...routes[route].map(id => new Option(nodes.get(id).name,id)));
+}
+function select(id, focusPicker=false) {
+  if (!nodes.has(id)) return;
+  if (!routes[route].includes(id)) {
+    route = 'all';
+    fillPicker();
+  }
+  active = id;
+  const node = nodes.get(id);
+  byId('picker').value = id;
+  const source = element('a','Open Cargo manifest');
+  source.href = node.manifest;
+  const link = element('p','');
+  link.append(source);
+  byId('inspection').replaceChildren(element('h2',node.label),element('code',node.name),element('p',node.description),link,
+    relation('Depends on',node.dependsOn),relation('Used by',dependents(id)));
+  const i = routes[route].indexOf(id);
+  byId('steps').hidden = route === 'all';
+  byId('prev').disabled = i === 0;
+  byId('next').disabled = i === routes[route].length-1;
+  byId('position').textContent = (i+1)+' / '+routes[route].length;
+  byId('permalink').href = '#'+id;
+  if (focusPicker) byId('picker').focus();
+  draw();
+}
+byId('route').onchange = event => {
+  route = event.target.value;
+  fillPicker();
+  select(routes[route][0]);
+};
+byId('picker').onchange = event => select(event.target.value);
+for (const [id,delta] of [['prev',-1], ['next',1]]) {
+  byId(id).onclick = () => select(routes[route][routes[route].indexOf(active)+delta]);
+}
+function orbit(horizontal, vertical=0) {
+  yaw += horizontal;
+  pitch = Math.max(-1.25,Math.min(1.25,pitch+vertical));
+  draw();
+}
+byId('left').onclick = () => orbit(-0.22);
+byId('right').onclick = () => orbit(0.22);
+byId('reset').onclick = () => { yaw = -0.12; pitch = 0.11; draw(); };
+stage.onkeydown = event => {
+  const moves = {ArrowLeft:[-.16,0],ArrowRight:[.16,0],ArrowUp:[0,-.16],ArrowDown:[0,.16]};
+  if (moves[event.key]) { event.preventDefault(); orbit(...moves[event.key]); }
+  if (event.key === 'Home') { event.preventDefault(); byId('reset').click(); }
+};
+let drag;
+stage.onpointerdown = event => {
+  if (!event.isPrimary || event.button !== 0) return;
+  drag = {x:event.clientX,y:event.clientY,id:event.target.closest('[data-id]')?.dataset.id,moved:false};
+  stage.setPointerCapture(event.pointerId);
+};
+stage.onpointermove = event => {
+  if (!drag || !event.isPrimary) return;
+  const dx = event.clientX-drag.x, dy = event.clientY-drag.y;
+  if (!drag.moved && Math.hypot(dx,dy) < 5) return;
+  drag.moved = true;
+  drag.x = event.clientX; drag.y = event.clientY;
+  orbit(dx*.009,dy*.006);
+};
+stage.onpointerup = event => {
+  if (!event.isPrimary) return;
+  if (drag && !drag.moved && drag.id) select(drag.id);
+  drag = null;
+};
+stage.onpointercancel = () => { drag = null; };
+stage.onlostpointercapture = () => { drag = null; };
+
+function restoreFragment() {
+  const id = location.hash.slice(1);
+  if (nodes.has(id)) select(id);
+}
+window.addEventListener('hashchange',restoreFragment);
+byId('save').onclick = () => {
+  const {point, ...node} = nodes.get(active);
+  const data = {data:{repository:{nameWithOwner:'EauDoon/tempo',revision:'731535b9808eda12e81ab6459703602554eaee5a',
+    selectedCrate:{...node,usedBy:dependents(active)}}}};
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  const a = document.createElement('a');
+  a.href = url; a.download = node.name+'-dependencies.json'; a.click();
+  setTimeout(() => URL.revokeObjectURL(url),2000);
+};
+function search() {
+  const query = byId('search').value.trim().toLowerCase();
+  let count = 0;
+  for (const article of articles) {
+    const {name,description,label} = nodes.get(article.id);
+    article.hidden = !(name+' '+label+' '+description).toLowerCase().includes(query);
+    if (!article.hidden) count++;
+  }
+  byId('matches').textContent = count+' of '+articles.length+' crates';
+}
+byId('search').oninput = search;
+byId('explorer').hidden = false;
+byId('searchbox').hidden = false;
+fillPicker();
+select(active);
+search();
+</script>
+</body></html>
